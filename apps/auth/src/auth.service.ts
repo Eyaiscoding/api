@@ -8,14 +8,14 @@ export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>
-  ){}
+  ) { }
 
   async getUsers() {
     return this.userRepository.find();
-  } 
+  }
 
-  async postUser(){
-    return this.userRepository.save({ name: 'Test'})
+  async postUser() {
+    return this.userRepository.save({ fName: 'Test3' })
   }
 
 }
