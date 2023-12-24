@@ -36,6 +36,51 @@
       "compilerOptions": {
         "tsConfigPath": "libs/shared/tsconfig.lib.json"
       }
+    },
+    "certifs": {
+      "type": "application",
+      "root": "apps/certifs",
+      "entryFile": "main",
+      "sourceRoot": "apps/certifs/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/certifs/tsconfig.app.json"
+      }
+    },
+    "formations": {
+      "type": "application",
+      "root": "apps/formations",
+      "entryFile": "main",
+      "sourceRoot": "apps/formations/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/formations/tsconfig.app.json"
+      }
+    },
+    "todo-list": {
+      "type": "application",
+      "root": "apps/todo-list",
+      "entryFile": "main",
+      "sourceRoot": "apps/todo-list/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/todo-list/tsconfig.app.json"
+      }
+    },
+    "admin": {
+      "type": "application",
+      "root": "apps/admin",
+      "entryFile": "main",
+      "sourceRoot": "apps/admin/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/admin/tsconfig.app.json"
+      }
+    },
+    "todolist": {
+      "type": "application",
+      "root": "apps/todolist",
+      "entryFile": "main",
+      "sourceRoot": "apps/todolist/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/todolist/tsconfig.app.json"
+      }
     }
   }
 }

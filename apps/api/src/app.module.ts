@@ -1,40 +1,25 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ClientProxyFactory, Transport } from '@nestjs/microservices';
+import { ConfigModule } from '@nestjs/config';
+import { SharedModule } from '@app/shared';
 
+//dynamic module
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath:'./.env',
+      envFilePath: './.env',
     }),
+
+    SharedModule.registerRmq('AUTH_SERVICE', process.env.RABBITMQ_AUTH_QUEUE),
+    SharedModule.registerRmq('CERTIFS_SERVICE', process.env.RABBITMQ_CERTIFS_QUEUE),
+    SharedModule.registerRmq('FORMATIONS_SERVICE', process.env.RABBITMQ_FORMATIONS_QUEUE),
+    SharedModule.registerRmq('TODOLIST_SERVICE', process.env.RABBITMQ_TODOLIST_QUEUE),
+
+
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-  {
-    provide : 'AUTH_SERVICE',
-    useFactory: (configService: ConfigService) => {
-      const USER = configService.get('RABBITMQ_USER');
-      const PASSWORD = configService.get('RABBITMQ_PASS');
-      const HOST = configService.get('RABBITMQ_HOST');
-      const QUEUE = configService.get('RABBITMQ_AUTH_QUEUE');
-
-      return ClientProxyFactory.create({
-        transport: Transport.RMQ,
-        options:{
-          urls: [`amqp://${USER}:${PASSWORD}@${HOST}`],
-          queue: QUEUE,
-          queueOptions:{
-            durable: true,
-          },
-        },
-      });
-    },
-    inject: [ConfigService]
-  },
- ],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
