@@ -5,8 +5,7 @@ import { AuthService } from './auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
-import { PostgresDBModule } from '@app/shared/postgresdb.module';
-import { SharedModule } from '@app/shared';
+import { SharedModule, PostgresDBModule } from '@app/shared';
 
 
 @Module({
@@ -15,7 +14,7 @@ import { SharedModule } from '@app/shared';
       isGlobal: true,
       envFilePath: './.env',
     }),
-     
+
     SharedModule,
     PostgresDBModule,
     TypeOrmModule.forFeature([UserEntity,]),

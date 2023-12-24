@@ -1,8 +1,8 @@
+import { Ctx, MessagePattern, RmqContext } from '@nestjs/microservices';
 import { Controller } from '@nestjs/common';
 import { CertifsService } from './certifs.service';
-import { Ctx, MessagePattern, RmqContext } from '@nestjs/microservices';
-import { SharedService } from '@app/shared';
-import { AuthGuard } from '@app/shared/auth.guard';
+import { AuthGuard,SharedService } from '@app/shared';
+
 
 @Controller()
 export class CertifsController {
