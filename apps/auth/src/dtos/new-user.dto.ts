@@ -1,7 +1,7 @@
 export class NewUserDTO {
-    fullName: string;
-    phoneNbr: string;
-    jobRole: string;
-    email: string;
-    password: string;
+  fullName: string;
+  phoneNbr: string;
+  department: string;
+  email: string;
+  password: string;
 }

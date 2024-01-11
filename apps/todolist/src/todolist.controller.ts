@@ -10,7 +10,7 @@ export class TodolistController {
     private readonly sharedService: SharedService
   ) { }
 
-  @MessagePattern({ cmd: 'get-todoList' })
+  @MessagePattern({ cmd: 'get-todolist' })
   async getTodoList(@Ctx() context: RmqContext) {
     this.sharedService.acknowledgeMessage(context)
     return this.todolistService.getHello();
@@ -18,7 +18,7 @@ export class TodolistController {
   }
 
 
-  @MessagePattern({ cmd: 'get-todoLists' })
+  @MessagePattern({ cmd: 'get-todolists' })
   async getTodoLists(@Ctx() context: RmqContext) {
     this.sharedService.acknowledgeMessage(context)
     return this.todolistService.getHello();
@@ -26,7 +26,7 @@ export class TodolistController {
   }
 
 
-  @MessagePattern({ cmd: 'post-todoList' })
+  @MessagePattern({ cmd: 'post-todolist' })
   async postTodoList(@Ctx() context: RmqContext) {
     this.sharedService.acknowledgeMessage(context)
     return this.todolistService.getHello();
