@@ -12,6 +12,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       envFilePath: './.env',
     }),
     MongooseModule.forRoot('mongodb+srv://eya:eya@skillhub-course-cluster.4c0vnb8.mongodb.net/?retryWrites=true&w=majority') ,
+    MongooseModule.forRoot('mongodb+srv://Molka:Molka@skillhub-certifs.j61onm8.mongodb.net/?retryWrites=true&w=majority') ,
   ],
   providers: [SharedService],
   exports: [SharedService],

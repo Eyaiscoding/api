@@ -32,7 +32,7 @@ export class AppController {
   }
 
   @UseGuards(AuthGuard)
-  @Get('certifs')
+  @Get('/certif/get-certifs')
   async getCertifs() {
     return this.certifsService.send(
       {
@@ -44,8 +44,8 @@ export class AppController {
 
   //protected route
   @UseGuards(AuthGuard)
-  @Get('certif')
-  async getCertif() {
+  @Get('/certif/get-certif/:id')
+  async getCertif(@Param('id') id: string) {
     return this.certifsService.send(
       {
         cmd: 'get-certif',
@@ -54,13 +54,62 @@ export class AppController {
     );
   }
 
-  @Post('certif')
-  async postCertif() {
+  @Post('certif/create-certif')
+  async createCertif(
+
+    @Body('name') name: string,
+    @Body('date') date: string,
+    @Body('place') place: string,
+    @Body('duration') duration: string,
+    @Body('target') target: string,
+    @Body('languages') languages: string,
+    @Body('description') description: string,
+  )
+   {
     return this.certifsService.send(
       {
-        cmd: 'post-certif',
+        cmd: 'create-certif',
       },
-      {},
+      {
+          name,
+          date,
+          place,
+          duration,
+          target,
+          languages,
+          description,
+      },
+    );
+  } 
+
+  @UseGuards(AuthGuard)
+  @Patch('certif/update-certif/:id') // Patch == Put
+  async updateCertif(
+    @Param('id') id: string,
+    @Body('name') name: string,
+    @Body('date') date: string,
+    @Body('place') place: string,
+    @Body('duration') duration: string,
+    @Body('target') target: string,
+    @Body('languages') languages: string,
+    @Body('description') description: string,
+  ) {
+    return this.certifsService.send(
+      {
+        cmd: 'update-certif', // Remove :id from the cmd
+      },
+      {
+        id, // Pass id separately
+        certif: {
+          name,
+          date,
+          place,
+          duration,
+          target,
+          languages,
+          description,
+        },
+      }
     );
   }
 

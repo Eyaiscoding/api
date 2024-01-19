@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 import { FormationsService } from './formations.service';
 import { SharedService } from '@app/shared';
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
@@ -29,6 +29,7 @@ export class FormationsController {
   
   
     @MessagePattern({ cmd: 'create-formation' })
+    
     async createFormation(@Ctx() context: RmqContext,
     @Payload() formation: FormationDocument
   ):Promise<FormationDocument> {

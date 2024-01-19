@@ -14,9 +14,9 @@ describe('FormationsController', () => {
     formationsController = app.get<FormationsController>(FormationsController);
   });
 
-  describe('root', () => {
+  //describe('root', () => {
     it('should return "Hello World!"', () => {
       expect(formationsController.getHello()).toBe('Hello World!');
     });
-  });
+//});
 });
