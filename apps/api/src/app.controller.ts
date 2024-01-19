@@ -1,5 +1,5 @@
 import { AuthGuard } from '@app/shared';
-import { Body, Controller, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Controller()
@@ -197,6 +197,21 @@ export class AppController {
         },
       );
     }
+
+    @UseGuards(AuthGuard)
+    @Delete('formation/delete-formation/:id')
+    async deleteFormation(@Param('id') id: string) {
+      return this.formationsService.send(
+        {
+          cmd: 'delete-formation', // Remove :id from the cmd
+        },
+        id, // Pass id as the payload
+      );
+    }
+
+
+
+
 
   @UseGuards(AuthGuard)
   @Get('todolist')
