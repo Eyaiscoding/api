@@ -21,5 +21,29 @@ async findAll() : Promise<FormationDocument[]> {
   return this.formationModel.find().exec();
 }
 
+async update(
+  id: string,
+  newTitle?: string,
+  newLevel?: string,
+  newDescription?: string,
+  newTopics?: string,
+  newDuration?: string,
+  newLanguages?: string,
+  newTarget?: string,
+): Promise<FormationDocument> {
+
+  let existingFormation = await this.findOne(id);
+
+  existingFormation.title = newTitle !== undefined ? newTitle : existingFormation.title;
+  existingFormation.level = newLevel !== undefined ? newLevel : existingFormation.level;
+  existingFormation.description = newDescription !== undefined ? newDescription : existingFormation.description;
+  existingFormation.topics = newTopics !== undefined ? newTopics : existingFormation.topics;
+  existingFormation.duration = newDuration !== undefined ? newDuration : existingFormation.duration;
+  existingFormation.languages = newLanguages !== undefined ? newLanguages : existingFormation.languages;
+  existingFormation.target = newTarget !== undefined ? newTarget : existingFormation.target;
+
+  return existingFormation.save();
+}
+
 
 }

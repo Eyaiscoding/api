@@ -19,7 +19,7 @@ export class FormationsController {
     }
   
   
-    @MessagePattern({ cmd: 'get-formation' }) // Removed /:id from the cmd
+    @MessagePattern({ cmd: 'get-formation' }) 
     async getFormation(@Ctx() context: RmqContext, @Payload() id: string) {
       this.sharedService.acknowledgeMessage(context);
       return this.formationsService.findOne(id);
@@ -43,5 +43,25 @@ export class FormationsController {
       formation.target,);
 
   }
+ 
+  @MessagePattern({ cmd: 'update-formation' })
+  async updateFormation(@Ctx() context: RmqContext, @Payload() payload: { id: string, formation: FormationDocument }) {
+    this.sharedService.acknowledgeMessage(context);
+  
+    const { id, formation } = payload;
+    return this.formationsService.update(
+      id,
+      formation.title,
+      formation.level,
+      formation.description,
+      formation.topics,
+      formation.duration,
+      formation.languages,
+      formation.target
+    );
+  }
+
+
+
   }
 

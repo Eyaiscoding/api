@@ -1,5 +1,5 @@
 import { AuthGuard } from '@app/shared';
-import { Body, Controller, Get, Inject, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Controller()
@@ -63,6 +63,39 @@ export class AppController {
       {},
     );
   }
+
+  //protected route
+  @UseGuards(AuthGuard)
+  @Patch('formation/update-formation/:id') // Patch == Put
+  async updateFormation(
+    @Param('id') id: string,
+    @Body('title') title: string,
+    @Body('level') level: string,
+    @Body('description') description: string,
+    @Body('topics') topics: string,
+    @Body('duration') duration: string,
+    @Body('languages') languages: string,
+    @Body('target') target: string,
+  ) {
+    return this.formationsService.send(
+      {
+        cmd: 'update-formation', // Remove :id from the cmd
+      },
+      {
+        id, // Pass id separately
+        formation: {
+          title,
+          level,
+          description,
+          topics,
+          duration,
+          languages,
+          target,
+        },
+      }
+    );
+  }
+
 
   @UseGuards(AuthGuard)
   @Get('formation/get-formation/:id')
