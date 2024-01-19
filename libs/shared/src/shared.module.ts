@@ -2,6 +2,7 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { SharedService } from './shared.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
+import { MongooseModule } from '@nestjs/mongoose';
 
 
 @Module({
@@ -10,6 +11,7 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
       isGlobal: true,
       envFilePath: './.env',
     }),
+    MongooseModule.forRoot('mongodb+srv://eya:eya@skillhub-course-cluster.4c0vnb8.mongodb.net/?retryWrites=true&w=majority') ,
   ],
   providers: [SharedService],
   exports: [SharedService],

@@ -1,5 +1,5 @@
 import { AuthGuard } from '@app/shared';
-import { Body, Controller, Get, Inject, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, UseGuards } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Controller()
@@ -65,7 +65,18 @@ export class AppController {
   }
 
   @UseGuards(AuthGuard)
-  @Get('formations')
+  @Get('formation/get-formation/:id')
+  async getFormation(@Param('id') id: string) {
+    return this.formationsService.send(
+      {
+        cmd: 'get-formation', // Remove :id from the cmd
+      },
+      id, // Pass id as the payload
+    );
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('formation/get-formations')
   async getFormations() {
     return this.formationsService.send(
       {
@@ -75,26 +86,35 @@ export class AppController {
     );
   }
 
-  @UseGuards(AuthGuard)
-  @Get('formation')
-  async getFormation() {
-    return this.formationsService.send(
-      {
-        cmd: 'get-formation',
-      },
-      {},
-    );
-  }
-
-  @Post('formation')
-  async postFormation() {
-    return this.formationsService.send(
-      {
-        cmd: 'post-formation',
-      },
-      {},
-    );
-  }
+  @Post('formation/create-formation')
+  async createFormation(
+ 
+      @Body('title') title: string,
+      @Body('level') level: string,
+      @Body('description') description: string,
+      @Body('topics') topics: string,
+      @Body('duration') duration: string,
+      @Body('languages') languages: string,
+      @Body('target') target: string,
+     
+    ) 
+    
+    {
+      return this.formationsService.send(
+        {
+          cmd: 'create-formation',
+        },
+        {
+          title,
+          level,
+          description,
+          topics,
+          duration,
+          languages,
+          target,
+        },
+      );
+    }
 
   @UseGuards(AuthGuard)
   @Get('todolist')
