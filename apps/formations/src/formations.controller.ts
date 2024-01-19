@@ -61,6 +61,13 @@ export class FormationsController {
     );
   }
 
+  @MessagePattern({ cmd: 'delete-formation' }) 
+  async deleteFormation(@Ctx() context: RmqContext, @Payload() id: string) {
+    this.sharedService.acknowledgeMessage(context);
+    console.log(`Received delete request for formation with id: ${id}`);
+    return this.formationsService.delete(id);
+  }
+  
 
 
   }

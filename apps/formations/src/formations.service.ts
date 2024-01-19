@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FormationDocument } from './formation.schema';
 import { Model } from 'mongoose';
+import { DeleteResult } from 'mongodb';
 
 @Injectable()
 export class FormationsService {
@@ -43,6 +44,18 @@ async update(
   existingFormation.target = newTarget !== undefined ? newTarget : existingFormation.target;
 
   return existingFormation.save();
+}
+
+async delete(id: string): Promise<DeleteResult> {
+  try {
+    console.log(`Deleting formation with id: ${id}`);
+    const result = await this.formationModel.deleteOne({ _id: id }).exec();
+    console.log(`Deletion result: ${JSON.stringify(result)}`);
+    return result;
+  } catch (error) {
+    console.error(`Error deleting formation with id ${id}: ${error.message}`);
+    throw error;
+  }
 }
 
 
