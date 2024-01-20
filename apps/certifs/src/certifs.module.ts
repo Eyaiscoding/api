@@ -13,6 +13,7 @@ import { CertifSchema } from './certif.schema';
     isGlobal: true,
     envFilePath: './.env',
   }),
+  MongooseModule.forRoot('mongodb+srv://Molka:Molka@skillhub-certifs.j61onm8.mongodb.net/?retryWrites=true&w=majority') ,
   MongooseModule.forFeature([{name: 'Certif', schema: CertifSchema}]),
   SharedModule,
   SharedModule.registerRmq('AUTH_SERVICE', process.env.RABBITMQ_AUTH_QUEUE),
