@@ -12,6 +12,7 @@ import { FormationSchema } from './formation.schema';
     isGlobal: true,
     envFilePath: './.env',
   }),
+  MongooseModule.forRoot('mongodb+srv://eya:eya@skillhub-course-cluster.4c0vnb8.mongodb.net/?retryWrites=true&w=majority') ,
   MongooseModule.forFeature([{name: 'Formation', schema: FormationSchema}]),
   SharedModule,
   SharedModule.registerRmq('AUTH_SERVICE', process.env.RABBITMQ_AUTH_QUEUE),
