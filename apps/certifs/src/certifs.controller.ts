@@ -1,5 +1,5 @@
 import { Ctx, MessagePattern, RmqContext, Payload } from '@nestjs/microservices';
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CertifsService } from './certifs.service';
 import { SharedService } from '@app/shared';
 import { CertifDocument } from './certif.schema';
@@ -58,4 +58,11 @@ export class CertifsController {
 
     );
     }
+  @MessagePattern({ cmd: 'delete-certif' })
+  async deleteCertif(@Ctx() context: RmqContext, @Payload() id: string) {
+    this.sharedService.acknowledgeMessage(context)
+    console.log(`Received delete request for certif with id: ${id}`);
+    await this.certifsService.delete(id);
+  }
+  
 }

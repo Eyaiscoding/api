@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CertifDocument } from './certif.schema';
 import { Model } from 'mongoose';
+import { DeleteResult } from 'mongodb';
 
 @Injectable()
 export class CertifsService {
@@ -45,9 +46,21 @@ export class CertifsService {
   existingCertif.languages = newLanguages !== undefined ? newLanguages : existingCertif.languages;
   existingCertif.description = newDescription !== undefined ? newDescription : existingCertif.description;
  
-
-
-
   return existingCertif.save();
  }
+
+ async delete(id: string): Promise<DeleteResult> {
+    try {
+      console.log(`Deleting certification with id: ${id}`);
+      const result = await this.certifModel.deleteOne({ _id: id }).exec();
+      console.log(`Deletion result: ${JSON.stringify(result)}`);
+      return result;
+    } catch (error) {
+      console.error(`Error deleting certification with id ${id}: ${error.message}`);
+      throw error;
+    }
+  }
+
+
 }
+ 

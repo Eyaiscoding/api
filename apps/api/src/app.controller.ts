@@ -50,7 +50,7 @@ export class AppController {
       {
         cmd: 'get-certif',
       },
-      {},
+      id,
     );
   }
 
@@ -82,7 +82,7 @@ export class AppController {
     );
   } 
 
-  @UseGuards(AuthGuard)
+  //@UseGuards(AuthGuard)
   @Patch('certif/update-certif/:id') // Patch == Put
   async updateCertif(
     @Param('id') id: string,
@@ -111,6 +111,17 @@ export class AppController {
         },
       }
     );
+  }
+  @UseGuards(AuthGuard)
+  @Delete('certif/delete-certif/:id')
+  async deleteCertif(@Param('id') id: string){
+     
+    return this.certifsService.send(
+      {
+        cmd: 'delete-certif', 
+      },
+      id,
+    )
   }
 
   //protected route
