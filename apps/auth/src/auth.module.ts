@@ -15,7 +15,7 @@ import { JwtStrategy } from './jwt-strategy';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: './.env',
+      //add this in local env : envFilePath: './.env',
     }),
     JwtModule.registerAsync({
       imports: [ConfigModule],

@@ -8,13 +8,14 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [ConfigModule.forRoot({
     isGlobal: true,
-    envFilePath: './.env',
+    //add this in local env : envFilePath: './.env',
   }),
 
     SharedModule,
-  SharedModule.registerRmq('AUTH_SERVICE', process.env.RABBITMQ_AUTH_QUEUE),
+  SharedModule.registerRmq('AUTH_SERVICE', Buffer.from(process.env.RABBITMQ_AUTH_QUEUE, 'base64').toString('utf-8')),
   ],
   controllers: [TodolistController],
   providers: [TodolistService],
 })
 export class TodolistModule { }
+//const decodedValue = Buffer.from(process.env.SOME_VAR, 'base64').toString('utf-8');
