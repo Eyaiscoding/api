@@ -34,6 +34,7 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          auth-type: IDENTITY
 
       - name: Debugging
         run: |
@@ -87,7 +88,7 @@ jobs:
         with:
           cluster-name: ${{ vars.AKSNAME }}
           resource-group: ${{ vars.RG }}
-          use-mi: true  # Set this option to true to use Managed Identity
+          
 
       #aks-set-context doesn't do a kubelogin so we add it manually
       - name: Kubelogin
