@@ -19,4 +19,9 @@ export class UserEntity {
 
   @Column({ select: false })
   password: string;
+  
+  @Column({ select: false , default: 'user'})
+  role: string;
+
+
 }
