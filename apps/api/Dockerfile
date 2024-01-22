@@ -11,4 +11,3 @@ COPY . .
 # Command to run the application
 CMD ["npm", "run", "start:dev", "api"]
 
-#Triggering commit
