@@ -11,11 +11,12 @@ on:
 jobs:
   BuildPush:
     runs-on: ubuntu-latest
+    environment: skillhub-api
     env:
       APPNAME: "${{ vars.APPNAME }}"
       ACRNAME: "${{ vars.ACRNAME}}"
       RG: "${{ vars.RG }}"
-      ENVIRONMENT: "${{ vars.ENVIRONMENT }}"
+      ENVIRONMENT: "skillhub-api"
     steps:
       - name: Get application code from repo
         uses: actions/checkout@v2
@@ -66,7 +67,7 @@ jobs:
           az acr build -t $REPOSITORY/$IMAGEREPO:${{ github.sha }} -r $ACRNAME $APPREPOPATH/.
   Deploy:
     runs-on: ubuntu-latest
-    environment: "${{ vars.ENVIRONMENT }}"
+    environment: skillhub-api
     needs: [BuildPush]
     env:
       APPNAME: "${{ vars.APPNAME }}"
