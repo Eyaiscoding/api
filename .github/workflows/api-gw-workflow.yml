@@ -1,47 +1,5 @@
 name: API GW CI/CD Pipeline
 
-env:
-
-  #The Resource Group where your resources are deployed
-  #required: true
-  RG: "rfc-skillhub-rg"
-
-  #The Name of the AKS resource
-  #required: true
-  AKSNAME: "rfc-skillhub-kc"
-
-  #The Name of the ACR resource
-  #required: true
-  ACRNAME: "skillhub"
-
-#The Name of the application
-#required: true
-  APPNAME: "api-gw"
-
-   #The Kubernetes Namespace to deploy the Application to
-   #required: false
-  NAMESPACE: "default"
-
-#The GitHub App code repo
-#required: false
-  APPREPO: "Eyaiscoding/api"
-
-#The GitHub REF to use when referencing the App code repo
-#required: false
-  APPREPOREF: ""
-
-#The directory in the repo containing the Dockerfile
-#required: false
-  APPREPOPATH: "."
-
-#A GitHub Environment to pull action secrets from
-#required: true
-  ENVIRONMENT: "skillhub-api"
-
-permissions:
-  id-token: write
-  contents: read
-
 on:
   push:
     branches:
@@ -54,22 +12,21 @@ jobs:
   BuildPush:
     runs-on: ubuntu-latest
     env:
-      environment: $ENVIRONMENT 
-      APPNAME: $APPNAME 
-      ACRNAME: $ACRNAME
-      RG: $RG
-
+      APPNAME: "${{ env.APPNAME }}"
+      ACRNAME: "${{ env.ACRNAME}}"
+      RG: "${{ env.RG }}"
+      ENVIRONMENT: "${{ env.ENVIRONMENT }}"
     steps:
       - name: Get application code from repo
         uses: actions/checkout@v2
         with:
-          repository: $APPREPO
-          ref: $APPREPOREF
+          repository: ${{ env.APPREPO}}
+          ref: ${{ env.APPREPOREF}}
 
       - name: Job parameter inspection
         run: |
-          echo "RG is $RG"
-          echo "AKS name is $AKSNAME"
+          echo "RG is ${{ env.RG }}"
+          echo "AKS name is ${{ env.AKSNAME }}"
 
       - name: Azure Login
         uses: Azure/login@v1.4.3
@@ -86,9 +43,9 @@ jobs:
       - name: ACR build
         id: acrbuild
         env:
-          ACRSERVER: "$ACRNAME.azurecr.io"
-          APPREPOPATH: $APPREPOPATH
-          IMAGEREPO: $APPNAME 
+          ACRSERVER: "${{ env.ACRNAME }}.azurecr.io"
+          APPREPOPATH: "${{ env.APPREPOPATH}}"
+          IMAGEREPO: "${{ env.APPNAME }}"
         run: |
           echo "Verifying directory contents in repo path $APPREPOPATH"
           ls $APPREPOPATH
@@ -100,15 +57,14 @@ jobs:
           az acr build -t $REPOSITORY/$IMAGEREPO:${{ github.sha }} -r $ACRNAME $APPREPOPATH/.
   Deploy:
     runs-on: ubuntu-latest
-    environment: $ENVIRONMENT
     needs: [BuildPush]
     env:
-      APPNAME: $APPNAME
-      NAMESP: $NAMESPACE
-      AKSNAME: $AKSNAME
-      ACRNAME: $ACRNAME
-      RG: $RG 
-
+      APPNAME: "${{ env.APPNAME }}"
+      NAMESP: "${{ env.NAMESPACE }}"
+      AKSNAME: "${{ env.AKSNAME}}"
+      ACRNAME: "${{ env.ACRNAME}}"
+      RG: "${{ env.RG }}"
+      ENVIRONMENT: "${{ env.ENVIRONMENT }}"
     steps:
       - name: Get application k8s manifests from repo
         uses: actions/checkout@v2
@@ -128,8 +84,8 @@ jobs:
       - name: Set the target Azure Kubernetes Service (AKS) cluster.
         uses: azure/aks-set-context@v2.0
         with:
-          cluster-name: $AKSNAME 
-          resource-group: $RG 
+          cluster-name: ${{ env.AKSNAME }}
+          resource-group: ${{ env.RG }}
 
       #aks-set-context doesn't do a kubelogin so we add it manually
       - name: Kubelogin
@@ -149,7 +105,6 @@ jobs:
           manifests: |
             ./manifests/api-gw.yml
           images: |
-            $ACRNAME.azurecr.io/azure:${{ github.sha }}
-          namespace: $NAMESPACE
+            ${{ env.ACRNAME }}.azurecr.io/azure:${{ github.sha }}
+          namespace: ${{ env.NAMESPACE }}
           action: deploy
-#Github sha = unique ID of commit
