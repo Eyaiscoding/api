@@ -87,6 +87,7 @@ jobs:
         with:
           cluster-name: ${{ vars.AKSNAME }}
           resource-group: ${{ vars.RG }}
+          use-mi: true  # Set this option to true to use Managed Identity
 
       #aks-set-context doesn't do a kubelogin so we add it manually
       - name: Kubelogin
