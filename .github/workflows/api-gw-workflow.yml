@@ -2,41 +2,41 @@ name: API GW CI/CD Pipeline
 
 env:
 
-#The Resource Group where your resources are deployed
-#required: true
-RG: "rfc-skillhub-rg"
+  #The Resource Group where your resources are deployed
+  #required: true
+  RG: "rfc-skillhub-rg"
 
-#The Name of the AKS resource
-#required: true
-AKSNAME: "rfc-skillhub-kc"
+  #The Name of the AKS resource
+  #required: true
+  AKSNAME: "rfc-skillhub-kc"
 
-#The Name of the ACR resource
-#required: true
-ACRNAME: "skillhub"
+  #The Name of the ACR resource
+  #required: true
+  ACRNAME: "skillhub"
 
 #The Name of the application
 #required: true
-APPNAME: "api-gw"
+  APPNAME: "api-gw"
 
-#The Kubernetes Namespace to deploy the Application to
-#required: false
-NAMESPACE: "default"
+   #The Kubernetes Namespace to deploy the Application to
+   #required: false
+  NAMESPACE: "default"
 
 #The GitHub App code repo
 #required: false
-APPREPO: "Eyaiscoding/api"
+  APPREPO: "Eyaiscoding/api"
 
 #The GitHub REF to use when referencing the App code repo
 #required: false
-APPREPOREF: ""
+  APPREPOREF: ""
 
 #The directory in the repo containing the Dockerfile
 #required: false
-APPREPOPATH: "."
+  APPREPOPATH: "."
 
 #A GitHub Environment to pull action secrets from
 #required: true
-ENVIRONMENT: "skillhub-api"
+  ENVIRONMENT: "skillhub-api"
 
 permissions:
   id-token: write
