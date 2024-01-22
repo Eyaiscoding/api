@@ -1,52 +1,52 @@
 name: API GW CI/CD Pipeline
 
 env:
-  # The Resource Group where your resources are deployed
-  # required: true
-  RG: "rfc-skillhub-rg"
 
-  # The Name of the AKS resource
-  # required: true
-  AKSNAME: "rfc-skillhub-kc"
+#The Resource Group where your resources are deployed
+#required: true
+RG: "rfc-skillhub-rg"
 
-  # The Name of the ACR resource
-  # required: true
-  ACRNAME: "skillhub"
+#The Name of the AKS resource
+#required: true
+AKSNAME: "rfc-skillhub-kc"
 
-  # The Name of the application
-  # required: true
-  APPNAME: "api-gw"
+#The Name of the ACR resource
+#required: true
+ACRNAME: "skillhub"
 
-  # The Kubernetes Namespace to deploy the Application to
-  # required: false
-  NAMESPACE: "default"
+#The Name of the application
+#required: true
+APPNAME: "api-gw"
 
-  # The GitHub App code repo
-  # required: false
-  APPREPO: "Eyaiscoding/api"
+#The Kubernetes Namespace to deploy the Application to
+#required: false
+NAMESPACE: "default"
 
-  # The GitHub REF to use when referencing the App code repo
-  # required: false
-  APPREPOREF: ""
+#The GitHub App code repo
+#required: false
+APPREPO: "Eyaiscoding/api"
 
-  # The directory in the repo containing the Dockerfile
-  # required: false
-  APPREPOPATH: "."
+#The GitHub REF to use when referencing the App code repo
+#required: false
+APPREPOREF: ""
 
-  # A GitHub Environment to pull action secrets from
-  # required: true
-  ENVIRONMENT: "skillhub-api"
+#The directory in the repo containing the Dockerfile
+#required: false
+APPREPOPATH: "."
+
+#A GitHub Environment to pull action secrets from
+#required: true
+ENVIRONMENT: "skillhub-api"
 
 permissions:
   id-token: write
   contents: read
 
 on:
- workflow_dispatch
   push:
     branches:
       - main
-    paths:
+    paths : 
       - "./apps/api"
 
 jobs:
@@ -92,10 +92,10 @@ jobs:
           echo "Verifying directory contents in repo path $APPREPOPATH"
           ls $APPREPOPATH
 
-          echo "Downcasing $ACRNAME for valid repository name"
-          REPOSITORY=$(echo $ACRNAME | tr '[:upper:]' '[:lower:]')
+          echo "Downcasing $ACRSERVER for valid repository name"
+          REPOSITORY=$(echo $ACRSERVER | tr '[:upper:]' '[:lower:]')
 
-          echo "Requesting ACR build on $ACRNAME for image $IMAGEREPO:${{ github.sha }}"
+          echo "Requesting ACR build on $ACRSERVER for image $IMAGEREPO:${{ github.sha }}"
           az acr build -t $REPOSITORY/$IMAGEREPO:${{ github.sha }} -r $ACRNAME $APPREPOPATH/.
   Deploy:
     runs-on: ubuntu-latest
@@ -130,9 +130,27 @@ jobs:
           cluster-name: ${{ env.AKSNAME }}
           resource-group: ${{ env.RG }}
 
-      # aks-set-context doesn't do a kubelogin, so we add it manually
+      #aks-set-context doesn't do a kubelogin so we add it manually
       - name: Kubelogin
         env:
           kubeloginversion: "v0.0.11"
         run: |
-          wget https://github.com/Azure/kubelogin/releases/download/${{ env.kubeloginversion }}/kubelogin-linux-am
+          wget https://github.com/Azure/kubelogin/releases/download/${{ env.kubeloginversion }}/kubelogin-linux-amd64.zip
+          unzip kubelogin-linux-amd64.zip
+          sudo mv bin/linux_amd64/kubelogin /usr/bin
+          kubelogin convert-kubeconfig -l azurecli
+
+      - name: Deploy app to AKS
+        uses: azure/k8s-deploy@v1.5
+        env:
+          ACRNAME: "${{ env.ACRNAME}}"
+        with:
+          manifests: |
+            ./manifests/api-gw.yml
+          images: |
+            ${{ env.ACRNAME }}.azurecr.io/azure:${{ github.sha }}
+          namespace: ${{ env.NAMESPACE }}
+          action: deploy
+#Github sha = unique ID of commit
+
+     
