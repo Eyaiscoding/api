@@ -49,4 +49,6 @@ export class AuthController {
     return this.authService.verifyJwt(payload.jwt);
 
   }
+
+  
 }
