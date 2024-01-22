@@ -4,4 +4,5 @@ export class NewUserDTO {
   department: string;
   email: string;
   password: string;
+  role: string;
 }
