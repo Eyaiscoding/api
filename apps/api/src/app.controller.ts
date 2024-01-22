@@ -2,6 +2,7 @@ import { AuthGuard } from '@app/shared';
 import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
+
 @Controller()
 export class AppController {
   constructor(
@@ -112,7 +113,7 @@ export class AppController {
       }
     );
   }
-  @UseGuards(AuthGuard)
+  //@UseGuards(AuthGuard)
   @Delete('certif/delete-certif/:id')
   async deleteCertif(@Param('id') id: string){
      
