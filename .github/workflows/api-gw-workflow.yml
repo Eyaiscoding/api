@@ -48,6 +48,7 @@ on:
       - main
     paths : 
       - "./apps/api"
+  workflow_dispatch:
 
 jobs:
   BuildPush:
@@ -92,10 +93,10 @@ jobs:
           echo "Verifying directory contents in repo path $APPREPOPATH"
           ls $APPREPOPATH
 
-          echo "Downcasing $ACRSERVER for valid repository name"
+          echo "Downcasing $ACRNAME for valid repository name"
           REPOSITORY=$(echo $ACRSERVER | tr '[:upper:]' '[:lower:]')
 
-          echo "Requesting ACR build on $ACRSERVER for image $IMAGEREPO:${{ github.sha }}"
+          echo "Requesting ACR build on $ACRNAME for image $IMAGEREPO:${{ github.sha }}"
           az acr build -t $REPOSITORY/$IMAGEREPO:${{ github.sha }} -r $ACRNAME $APPREPOPATH/.
   Deploy:
     runs-on: ubuntu-latest
