@@ -3,7 +3,7 @@ import { UserEntity } from "../user.entity";
 
 export const dataSourceOptions: DataSourceOptions = {
     type: 'postgres',
-    url: process.env.POSTGRES_URI,
+    url: Buffer.from(process.env.POSTGRES_URI, 'base64').toString('utf-8'),
     entities: [UserEntity],
     migrations: ['dist/apps/auth/db/migrations/*.js']
 };

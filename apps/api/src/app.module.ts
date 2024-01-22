@@ -9,13 +9,13 @@ import { SharedModule } from '@app/shared';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: './.env',
+      //add this in local env : envFilePath: './.env',
     }),
 
-    SharedModule.registerRmq('AUTH_SERVICE', process.env.RABBITMQ_AUTH_QUEUE),
-    SharedModule.registerRmq('CERTIFS_SERVICE', process.env.RABBITMQ_CERTIFS_QUEUE),
-    SharedModule.registerRmq('FORMATIONS_SERVICE', process.env.RABBITMQ_FORMATIONS_QUEUE),
-    SharedModule.registerRmq('TODOLIST_SERVICE', process.env.RABBITMQ_TODOLIST_QUEUE),
+    SharedModule.registerRmq('AUTH_SERVICE', Buffer.from(process.env.RABBITMQ_AUTH_QUEUE, 'base64').toString('utf-8')),
+    SharedModule.registerRmq('CERTIFS_SERVICE', Buffer.from(process.env.RABBITMQ_CERTIFS_QUEUE, 'base64').toString('utf-8')),
+    SharedModule.registerRmq('FORMATIONS_SERVICE', Buffer.from(process.env.RABBITMQ_FORMATIONS_QUEUE, 'base64').toString('utf-8')),
+    SharedModule.registerRmq('TODOLIST_SERVICE', Buffer.from(process.env.RABBITMQ_TODOLIST_QUEUE, 'base64').toString('utf-8')),
 
 
   ],

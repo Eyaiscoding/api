@@ -11,12 +11,12 @@ import { CertifSchema } from './certif.schema';
 @Module({
   imports: [ ConfigModule.forRoot({
     isGlobal: true,
-    envFilePath: './.env',
+    //add this in local env : envFilePath: './.env',
   }),
   MongooseModule.forRoot('mongodb+srv://Molka:Molka@skillhub-certifs.j61onm8.mongodb.net/?retryWrites=true&w=majority') ,
   MongooseModule.forFeature([{name: 'Certif', schema: CertifSchema}]),
   SharedModule,
-  SharedModule.registerRmq('AUTH_SERVICE', process.env.RABBITMQ_AUTH_QUEUE),
+  SharedModule.registerRmq('AUTH_SERVICE', Buffer.from(process.env.RABBITMQ_AUTH_QUEUE, 'base64').toString('utf-8')),
 ],
   controllers: [CertifsController],
   providers: [CertifsService],

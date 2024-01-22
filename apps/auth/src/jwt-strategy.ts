@@ -15,9 +15,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
                     },
                 ]),
             ignoreExpiration: false,
-            secretOrKey: process.env.JWT_SECRET,
+            secretOrKey: Buffer.from(process.env.JWT_SECRET, 'base64').toString('utf-8')
         });
     }
+
 
     async validate(payload: any) {
         return { ...payload };

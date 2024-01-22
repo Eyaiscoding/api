@@ -8,3 +8,5 @@ RUN npm install
 
 COPY . .
 
+# Command to run the application
+CMD ["npm", "run", "start:dev", "auth"]
