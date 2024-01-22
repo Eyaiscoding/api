@@ -57,6 +57,7 @@ jobs:
           az acr build -t $REPOSITORY/$IMAGEREPO:${{ github.sha }} -r $ACRNAME $APPREPOPATH/.
   Deploy:
     runs-on: ubuntu-latest
+    environment: ${{ env.ENVIRONMENT }}
     needs: [BuildPush]
     env:
       APPNAME: "${{ env.APPNAME }}"
@@ -64,7 +65,7 @@ jobs:
       AKSNAME: "${{ env.AKSNAME}}"
       ACRNAME: "${{ env.ACRNAME}}"
       RG: "${{ env.RG }}"
-      ENVIRONMENT: "${{ env.ENVIRONMENT }}"
+
     steps:
       - name: Get application k8s manifests from repo
         uses: actions/checkout@v2
@@ -108,3 +109,4 @@ jobs:
             ${{ env.ACRNAME }}.azurecr.io/azure:${{ github.sha }}
           namespace: ${{ env.NAMESPACE }}
           action: deploy
+#Github sha = unique ID of commit"
