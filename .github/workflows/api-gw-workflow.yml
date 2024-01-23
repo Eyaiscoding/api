@@ -50,11 +50,9 @@ jobs:
       AKSNAME: "${{ vars.AKSNAME}}"
       ACRNAME: "${{ vars.ACRNAME}}"
       RG: "${{ vars.RG }}"
-
     steps:
       - name: Get application k8s manifests from repo
         uses: actions/checkout@v2
-
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -62,21 +60,16 @@ jobs:
           client-id: '${{ secrets.AZURE_CLIENT_ID }}'
           tenant-id: '${{ secrets.AZURE_TENANT_ID }}'
           subscription-id: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
-        
-
       - name: Install Kubectl
         uses: azure/setup-kubectl@v3.0
         with:
           version: "latest"
-
       - name: Set the target Azure Kubernetes Service (AKS) cluster.
         uses: azure/aks-set-context@v2.0
         with:
           cluster-name: "${{ vars.AKSNAME }}"
           resource-group: "${{ vars.RG }}"
-          
-
-      #aks-set-context doesn't do a kubelogin so we add it manually
+     #aks-set-context doesn't do a kubelogin so we add it manually
       - name: Kubelogin
         env:
           kubeloginversion: "v0.0.11"
@@ -85,7 +78,6 @@ jobs:
           unzip kubelogin-linux-amd64.zip
           sudo mv bin/linux_amd64/kubelogin /usr/bin
           kubelogin convert-kubeconfig -l azurecli
-
       - name: Deploy app to AKS
         uses: azure/k8s-deploy@v4.10.0
         env:
